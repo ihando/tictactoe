@@ -1,0 +1,27 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.gameboard {
+    height: 70%;
+    width: 50%;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+}
+
+.r {
+    display:flex;
+    flex: 1;
+}
+.box {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 150px;
+    border: 2px solid black;
+    font-weight: 100;
+}
