@@ -60,26 +60,43 @@ const GameController = (() => {
 })();
 
 const displayController = (() => {
-    const p1 = Player("Bob", "O");
-    const p2 = Player("Wob", "X");
-    let gameInProgress = true;
-    GameController.startGame(p1, p2);
-    boxes.forEach((box, index) => {
-        box.addEventListener("click", () => {
-            if (gameInProgress) {
-                if (GameController.getPlayer().name === p1.name) {
-                    box.innerHTML = p1.marker;
-                } else if (GameController.getPlayer().name === p2.name){
-                    box.innerHTML = p2.marker;
-                } else {
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector(".form");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const p1name = formData.get("player1");
+            const p2name = formData.get("player2");
+
+            const p1 = Player(p1name, "O");
+            const p2 = Player(p2name, "X");
+            let gameInProgress = true;
+            GameController.startGame(p1, p2);
+            Gameboard.resetBoard();
+            boxes.forEach(div => {
+                div.innerHTML = "";
+            })
+            winmsg = document.querySelector(".winnermessage");
+            winmsg.innerHTML = "";
+            boxes.forEach((box, index) => {
+                box.addEventListener("click", () => {
+                    if (gameInProgress) {
+                        if (GameController.getPlayer().name === p1.name) {
+                            box.innerHTML = p1.marker;
+                        } else if (GameController.getPlayer().name === p2.name){
+                            box.innerHTML = p2.marker;
+                        } else {
                 }
-                GameController.playTurn(index);
-                if (GameController.checkWin()) {
-                    gameInProgress = false;
+                    GameController.playTurn(index);
+                    if (GameController.checkWin()) {
+                        gameInProgress = false;
                 }
             }
         });
     });
+    form.reset();
+        })
+    })
+    
 })();
 
-//Hhihihih

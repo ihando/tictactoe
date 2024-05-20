@@ -25,3 +25,17 @@ body, html {
     border: 2px solid black;
     font-weight: 100;
 }
+
+.form {
+    margin-top: 5px;
+    display:flex;
+    flex-direction: column;
+}
+
+.r {
+    display: flex;
+    height: 1rem;
+}
+.submit {
+    width: 5rem;
+}
