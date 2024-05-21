@@ -53,46 +53,61 @@ const GameController = (() => {
             switchPlayer();
             const winmsg = document.querySelector(".winnermessage");
             winmsg.innerHTML = "Congrats " + currentPlayer.name + " you won!";
-            
+            switchPlayer();
         };    
     }
-    return { startGame, playTurn, getPlayer, checkWin};
+    return { startGame, playTurn, getPlayer, checkWin, players};
 })();
 
 const displayController = (() => {
     document.addEventListener("DOMContentLoaded", () => {
         const form = document.querySelector(".form");
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const formData = new FormData(form);
-            const p1name = formData.get("player1");
-            const p2name = formData.get("player2");
-
-            const p1 = Player(p1name, "O");
-            const p2 = Player(p2name, "X");
-            let gameInProgress = true;
-            GameController.startGame(p1, p2);
-            Gameboard.resetBoard();
+        turnmsg = document.querySelector(".turnmsg");
+        form.addEventListener("reset", (event) => {
             boxes.forEach(div => {
                 div.innerHTML = "";
             })
             winmsg = document.querySelector(".winnermessage");
             winmsg.innerHTML = "";
-            boxes.forEach((box, index) => {
-                box.addEventListener("click", () => {
-                    if (gameInProgress) {
-                        if (GameController.getPlayer().name === p1.name) {
-                            box.innerHTML = p1.marker;
-                        } else if (GameController.getPlayer().name === p2.name){
-                            box.innerHTML = p2.marker;
-                        } else {
-                }
-                    GameController.playTurn(index);
-                    if (GameController.checkWin()) {
-                        gameInProgress = false;
-                }
+            Gameboard.resetBoard();
+        })
+        form.addEventListener("submit", (event) => {
+            gameInProgress = true;
+            event.preventDefault();
+            const formData = new FormData(form);
+            const p1name = formData.get("player1");
+            const p2name = formData.get("player2");
+            const p1 = Player(p1name, "O");
+            const p2 = Player(p2name, "X");
+            GameController.startGame(p1, p2);
+            turnmsg.innerHTML = p1.name + "'s turn";
+            function playgame() {
+                if (gameInProgress) {
+                    const box = this;
+                    const index = Array.from(boxes).indexOf(box);
+                    if (GameController.getPlayer().name === p1.name) {
+                        box.innerHTML = p1.marker;
+                        turnmsg.innerHTML = p2.name + "'s turn";
+                    } else if (GameController.getPlayer().name === p2.name){
+                        box.innerHTML = p2.marker;
+                        turnmsg.innerHTML = p1.name + "'s turn";
+                    } else {
             }
-        });
+                GameController.playTurn(index);
+                if (GameController.checkWin()) {
+                    turnmsg.innerHTML = "";
+                    gameInProgress = false;
+                    GameController.players.pop();
+                    GameController.players.pop();
+                    boxes.forEach((box, index) => {
+                        box.removeEventListener("click", playgame)
+                    })
+            }
+        }
+            }
+            boxes.forEach((box, index) => {
+                box.addEventListener("click", playgame);
+            
     });
     form.reset();
         })
