@@ -85,10 +85,10 @@ const displayController = (() => {
                 if (gameInProgress) {
                     const box = this;
                     const index = Array.from(boxes).indexOf(box);
-                    if (GameController.getPlayer().name === p1.name) {
+                    if (GameController.getPlayer().name === p1.name && Gameboard.getBoard()[index] === null) {
                         box.innerHTML = p1.marker;
                         turnmsg.innerHTML = p2.name + "'s turn";
-                    } else if (GameController.getPlayer().name === p2.name){
+                    } else if (GameController.getPlayer().name === p2.name && Gameboard.getBoard()[index] === null){
                         box.innerHTML = p2.marker;
                         turnmsg.innerHTML = p1.name + "'s turn";
                     } else {
